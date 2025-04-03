@@ -36,6 +36,10 @@ public final class MaxHeap<T extends Comparable<? super T>>
         }
     }
 
+    public boolean checkInitialized() {
+        return initialized;
+    }
+
     @Override
     public void addSequential(T newEntry) {
     // TODO Auto-generated method stub
@@ -56,26 +60,32 @@ public final class MaxHeap<T extends Comparable<? super T>>
 
     @Override
     public T getMax() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getMax'");
+        checkInitialized();
+        T root = null;
+        if (!isEmpty()) {
+            root = heap[1];
+        }
+        return root;
     }
 
     @Override
     public boolean isEmpty() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+        return lastIndex < 1;
     }
 
     @Override
     public int getSize() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getSize'");
+        return lastIndex;
     }
 
     @Override
     public void clear() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'clear'");
+        checkInitialized();
+        while (lastIndex > -1) {
+            heap[lastIndex] = null;
+            lastIndex--;
+        }
+        lastIndex = 0;
     }
     
 }
