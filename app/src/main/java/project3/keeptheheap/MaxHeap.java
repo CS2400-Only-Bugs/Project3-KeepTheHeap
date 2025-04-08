@@ -131,13 +131,6 @@ public final class MaxHeap<T extends Comparable<? super T>>
         heap[rootIndex] = orphan;
     }
 
-    // Swaps an array at index a and b
-    void swap(T[] array, int a, int b) {
-        T tempArray = array[a];
-        array[a] = array[b];
-        array[b] = tempArray;
-    }
-
     void heapsort(T[] array, int n) {
         for (int rootIndex = n / 2 - 1; rootIndex >= 0; rootIndex--) {
             reheap(array, rootIndex, n - 1);
