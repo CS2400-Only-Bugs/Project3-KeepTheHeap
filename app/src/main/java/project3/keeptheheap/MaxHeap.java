@@ -49,7 +49,7 @@ public final class MaxHeap<T extends Comparable<? super T>>
     }
 
     @Override
-    public void addSequential(T newEntry) { //regular add method? check
+    public void addSequential(T newEntry) {
         checkInitialized();
         int newIndex = lastIndex + 1;
         int parentIndex = newIndex / 2;
@@ -62,18 +62,20 @@ public final class MaxHeap<T extends Comparable<? super T>>
         lastIndex++;
     }
 
-    @Override //addSequential using reheap? check
+    @Override 
+    //addSequential using reheap? check
+    //reheap method is for reheap down
     public void addOptimal(T newEntry) {
         checkInitialized();
         lastIndex++;
         heap[lastIndex] = newEntry;
         int currentIndex = lastIndex;   
         while (currentIndex > 1 && heap[currentIndex].compareTo(heap[currentIndex / 2]) > 0) {
-        T temp = heap[currentIndex];
-        heap[currentIndex] = heap[currentIndex / 2];
-        heap[currentIndex / 2] = temp;
-        currentIndex = currentIndex / 2;
-    }
+            T temp = heap[currentIndex];
+            heap[currentIndex] = heap[currentIndex / 2];
+            heap[currentIndex / 2] = temp;
+            currentIndex = currentIndex / 2;
+        }
     }
 
     @Override
