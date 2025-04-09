@@ -62,8 +62,15 @@ public final class MaxHeap<T extends Comparable<? super T>>
 
     @Override
     public T removeMax() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeMax'");
+        checkInitialized();
+        T root = null;
+        if (!isEmpty()) {
+            root = heap[1];
+            heap[1] = heap[lastIndex];
+            lastIndex--;
+            reheap(1);
+        }
+        return root;
     }
 
     @Override
@@ -137,6 +144,26 @@ public final class MaxHeap<T extends Comparable<? super T>>
         }
     }
 
+    private void reheap(int rootIndex) {
+        boolean done = false;
+        T orphan = heap[rootIndex];
+        int leftChildIndex = 2 * rootIndex;
+        while (!done && leftChildIndex <= lastIndex) {
+            int largerChildIndex = leftChildIndex;
+            int rightChildIndex = leftChildIndex + 1;
+            if (rightChildIndex <= lastIndex && heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
+                largerChildIndex = rightChildIndex;
+            }
+            if (orphan.compareTo(heap[largerChildIndex]) < 0) {
+                heap[rootIndex] = heap[largerChildIndex];
+                rootIndex = largerChildIndex;
+                leftChildIndex = 2 * rootIndex;
+            } else {
+                done = true;
+            }
+        }
+        heap[rootIndex] = orphan;
+    }
     public static void main(String[] args) throws FileNotFoundException {
         MaxHeap<Integer> sorter = new MaxHeap<>();
         Integer[] array = fileToArray("app/src/main/resources/data_sorted.txt");
