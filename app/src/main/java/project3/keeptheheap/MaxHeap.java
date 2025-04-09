@@ -49,15 +49,31 @@ public final class MaxHeap<T extends Comparable<? super T>>
     }
 
     @Override
-    public void addSequential(T newEntry) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addSequential'");
+    public void addSequential(T newEntry) { //regular add method? check
+        checkInitialized();
+        int newIndex = lastIndex + 1;
+        int parentIndex = newIndex / 2;
+        while((parentIndex > 0) && newEntry.compareTo(heap[parentIndex]) > 0) {
+            heap[newIndex] = heap[parentIndex];
+            newIndex = parentIndex;
+            parentIndex = newIndex / 2;
+        } //end while
+        heap[newIndex] = newEntry;
+        lastIndex++;
     }
 
-    @Override
+    @Override //addSequential using reheap? check
     public void addOptimal(T newEntry) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addOptimal'");
+        checkInitialized();
+        lastIndex++;
+        heap[lastIndex] = newEntry;
+        int currentIndex = lastIndex;   
+        while (currentIndex > 1 && heap[currentIndex].compareTo(heap[currentIndex / 2]) > 0) {
+        T temp = heap[currentIndex];
+        heap[currentIndex] = heap[currentIndex / 2];
+        heap[currentIndex / 2] = temp;
+        currentIndex = currentIndex / 2;
+    }
     }
 
     @Override
@@ -117,7 +133,7 @@ public final class MaxHeap<T extends Comparable<? super T>>
         return fileArray;
     }
 
-    void reheap(T[] heap, int rootIndex, int lastIndex) {
+    void reheap(T[] heap, int rootIndex, int lastIndex) { //compare both reheap methods
         boolean done = false;
         T orphan = heap[rootIndex];
         int leftChildIndex = 2 * rootIndex + 1;
