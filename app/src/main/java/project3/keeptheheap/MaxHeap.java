@@ -12,7 +12,7 @@ public final class MaxHeap<T extends Comparable<? super T>>
     private static final int DEFAULT_CAPACITY = 25;
     private static final int MAX_CAPACITY = 10000;
     private int sequentialSwapCount = 0;
-    private int optimalSwapCount = 0;
+    private static int optimalSwapCount = 0;
 
     public MaxHeap() {
         this(DEFAULT_CAPACITY);
@@ -61,19 +61,26 @@ public final class MaxHeap<T extends Comparable<? super T>>
         lastIndex++;
     }
 
+    public void printHeap() {
+        System.out.print("Heap built using sequential insertions: ");
+        for (int i = 1; i <= lastIndex; i++) {
+            System.out.print(heap[i] + " ");
+        }
+        System.out.println();
+
+        System.out.println("\nNumber of swaps in heap creation: " + sequentialSwapCount);
+        System.out.println("\nHeap after 10 removals: ");
+    }
+
     public static void sequentialSort(String fileName) throws FileNotFoundException {
         Integer[] fileData = fileToArray(fileName);
 
         MaxHeap<Integer> maxheap = new MaxHeap<>(fileData.length);
-        for (int i = 0; i < fileData.length; i++) {
+        for (int i = 1; i < fileData.length; i++) {
             maxheap.addSequential(fileData[i]);
         }
 
-        System.out.print("Heap built using sequential insertions: ");
-        for (int i = 0; i <= maxheap.lastIndex; i++) {
-            System.out.print(maxheap.heap[i] + " ");
-        }
-        System.out.println("\nNumber of swaps in heap creation: " + maxheap.sequentialSwapCount);
+        maxheap.printHeap();
     }
 
     @Override
@@ -132,36 +139,33 @@ public final class MaxHeap<T extends Comparable<? super T>>
         return fileArray;
     }
 
-    /*
-     * void reheap(T[] heap, int rootIndex, int lastIndex) { //compare both reheap
-     * methods
-     * boolean done = false;
-     * T orphan = heap[rootIndex];
-     * int leftChildIndex = 2 * rootIndex + 1;
-     * while (!done && leftChildIndex <= lastIndex) {
-     * int largerChildIndex = leftChildIndex;
-     * int rightChildIndex = leftChildIndex + 1;
-     * if (rightChildIndex <= lastIndex &&
-     * heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
-     * largerChildIndex = rightChildIndex;
-     * }
-     * if (orphan.compareTo(heap[largerChildIndex]) < 0) {
-     * heap[rootIndex] = heap[largerChildIndex];
-     * rootIndex = largerChildIndex;
-     * leftChildIndex = 2 * rootIndex + 1;
-     * } else {
-     * done = true;
-     * }
-     * }
-     * heap[rootIndex] = orphan;
-     * }
-     * 
-     * void heapsort(T[] array, int n) {
-     * for (int rootIndex = n / 2 - 1; rootIndex >= 0; rootIndex--) {
-     * reheap(array, rootIndex, n - 1);
-     * }
-     * }
-     */
+    void reheap(T[] heap, int rootIndex, int lastIndex) {
+        boolean done = false;
+        T orphan = heap[rootIndex];
+        int leftChildIndex = 2 * rootIndex + 1;
+        while (!done && leftChildIndex <= lastIndex) {
+            int largerChildIndex = leftChildIndex;
+            int rightChildIndex = leftChildIndex + 1;
+            if (rightChildIndex <= lastIndex && heap[rightChildIndex].compareTo(heap[largerChildIndex]) > 0) {
+                largerChildIndex = rightChildIndex;
+            }
+            if (orphan.compareTo(heap[largerChildIndex]) < 0) {
+                heap[rootIndex] = heap[largerChildIndex];
+                optimalSwapCount++;
+                rootIndex = largerChildIndex;
+                leftChildIndex = 2 * rootIndex + 1;
+            } else {
+                done = true;
+            }
+        }
+        heap[rootIndex] = orphan;
+    }
+
+    void heapsort(T[] array, int n) {
+        for (int rootIndex = n / 2 - 1; rootIndex >= 0; rootIndex--) {
+            reheap(array, rootIndex, n - 1);
+        }
+    }
 
     private void reheap(int rootIndex) {
         boolean done = false;
@@ -185,6 +189,19 @@ public final class MaxHeap<T extends Comparable<? super T>>
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        sequentialSort("app/src/main/resources/data_sorted.txt");
+        String fileName = "app/src/main/resources/data_sorted.txt";
+
+        sequentialSort(fileName);
+
+        MaxHeap<Integer> sorter = new MaxHeap<>();
+        Integer[] array = fileToArray(fileName);
+        sorter.heapsort(array, array.length);
+
+        System.out.print("\n\nHeap built using optimal method:");
+        for (int i : array) {
+            System.out.print(i + " ");
+        }
+        System.out.println("\n\nNumber of swaps in the heap creation: " + optimalSwapCount);
+        System.out.println("\nHeap after 10 removals: ");
     }
 }
