@@ -13,11 +13,18 @@ public final class MaxHeap<T extends Comparable<? super T>>
     private static final int MAX_CAPACITY = 10000;
     private int sequentialSwapCount = 0;
     public static int optimalSwapCount = 0;
-
+            
+    /**
+     * Default constructor for MaxHeap. Initializes the heap with a default capacity.
+     */
     public MaxHeap() {
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * Constructor for MaxHeap with a specified initial capacity.
+     * @param initialCapacity the initial capacity of the heap
+     */
     public MaxHeap(int initialCapacity) {
         if (initialCapacity < DEFAULT_CAPACITY) {
             initialCapacity = DEFAULT_CAPACITY;
@@ -36,22 +43,38 @@ public final class MaxHeap<T extends Comparable<? super T>>
         initialized = true;
     }
 
+    /**
+     * Checks if the given capacity exceeds the maximum capacity.
+     * @throws IllegalStateException if the capacity exceeds the maximum capacity
+     * @param capacity the capacity to check
+     */
     public void checkCapacity(int capacity) {
         if (capacity > MAX_CAPACITY) {
             throw new IllegalStateException("Capacity larger than Max Capacity");
         }
     }
 
+    /**
+     * Doubles the capacity of the heap.
+     */
     public void doubleCapacity() {
         int newCapacity = heap.length * 2;
         checkCapacity(newCapacity);
         heap = java.util.Arrays.copyOf(heap, newCapacity);
     }
 
+    /**
+     * Checks if the heap is initialized.
+     * @return true if the heap is initialized, false otherwise
+     */
     public boolean checkInitialized() {
         return initialized;
     }
 
+    /**
+     * Adds a new entry to the heap in a sequential manner.
+     * @param newEntry the new entry to be added
+     */
     @Override
     public void addSequential(T newEntry) {
         checkInitialized();
@@ -70,6 +93,10 @@ public final class MaxHeap<T extends Comparable<? super T>>
         lastIndex++;
     }
 
+    /**
+     * Prints the heap and the number of swaps made during its creation.
+     * This method is used for debugging and visualization purposes.
+     */
     public void printHeap() {
         System.out.print("Heap built using sequential insertions: ");
         for (int i = 1; i <= lastIndex; i++) {
@@ -81,6 +108,11 @@ public final class MaxHeap<T extends Comparable<? super T>>
         System.out.println("\nHeap after 10 removals: ");
     }
 
+    /**
+     * Sorts the heap using heapsort algorithm.
+     * @param fileName the name of the file containing the data to be sorted
+     * @throws FileNotFoundException if the file is not found
+     */
     public static void sequentialSort(String fileName) throws FileNotFoundException {
         Integer[] fileData = fileToArray(fileName);
 
@@ -92,6 +124,10 @@ public final class MaxHeap<T extends Comparable<? super T>>
         maxheap.printHeap();
     }
 
+    /**
+     * removes the maximum element from the heap
+     * @return the maximum element from the heap
+     */
     @Override
     public T removeMax() {
         checkInitialized();
@@ -105,6 +141,9 @@ public final class MaxHeap<T extends Comparable<? super T>>
         return root;
     }
 
+    /**
+     * @return the maximum element from the heap without removing it
+     */
     @Override
     public T getMax() {
         checkInitialized();
@@ -115,16 +154,25 @@ public final class MaxHeap<T extends Comparable<? super T>>
         return root;
     }
 
+    /**
+     * @return true if the heap is empty, false otherwise
+     */
     @Override
     public boolean isEmpty() {
         return lastIndex < 1;
     }
 
+    /**
+     * @return the number of elements in the heap
+     */
     @Override
     public int getSize() {
         return lastIndex;
     }
 
+    /**
+     * clears the heap by removing all elements
+     */
     @Override
     public void clear() {
         checkInitialized();
@@ -135,6 +183,12 @@ public final class MaxHeap<T extends Comparable<? super T>>
         lastIndex = 0;
     }
 
+    /**
+     * * @return the heap as an array
+     * @param fileName the name of the file containing the data to be sorted
+     * @return the heap as an array
+     * @throws FileNotFoundException if the file is not found
+     */
     // Makes an array from the data.txt file once implemented
     static Integer[] fileToArray(String fileName) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(fileName));
@@ -147,7 +201,14 @@ public final class MaxHeap<T extends Comparable<? super T>>
         sc.close();
         return fileArray;
     }
-
+    
+    /**
+     * * Reheapifies the heap after removing the maximum element.
+     * @param heap the heap to be reheapified
+     * @param rootIndex the index of the root element
+     * @param lastIndex the index of the last element
+     * @param <T> the type of the elements in the heap
+     */
     void reheap(T[] heap, int rootIndex, int lastIndex) {
         boolean done = false;
         T orphan = heap[rootIndex];
@@ -170,12 +231,23 @@ public final class MaxHeap<T extends Comparable<? super T>>
         heap[rootIndex] = orphan;
     }
 
+    /**
+     * * Heapsort algorithm to sort the array.
+     * @param array the array to be sorted
+     * @param n the number of elements in the array
+     * @param <T> the type of the elements in the array
+     */
     void heapsort(T[] array, int n) {
         for (int rootIndex = n / 2 - 1; rootIndex >= 0; rootIndex--) {
             reheap(array, rootIndex, n - 1);
         }
     }
 
+    /**
+     * * Reheapifies the heap after removing the maximum element.
+     * @param rootIndex the index of the root element
+     * @param <T> the type of the elements in the heap
+     */
     private void reheap(int rootIndex) {
         boolean done = false;
         T orphan = heap[rootIndex];
