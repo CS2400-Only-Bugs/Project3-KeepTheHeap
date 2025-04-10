@@ -12,7 +12,7 @@ public final class MaxHeap<T extends Comparable<? super T>>
     private static final int DEFAULT_CAPACITY = 25;
     private static final int MAX_CAPACITY = 10000;
     private int sequentialSwapCount = 0;
-    private static int optimalSwapCount = 0;
+    public static int optimalSwapCount = 0;
 
     public MaxHeap() {
         this(DEFAULT_CAPACITY);
@@ -39,7 +39,7 @@ public final class MaxHeap<T extends Comparable<? super T>>
     public void checkCapacity(int capacity) {
         if (capacity > MAX_CAPACITY) {
             throw new IllegalStateException("Capacity larger than Max Capacity");
-        } 
+        }
     }
 
     public void doubleCapacity() {
@@ -197,20 +197,4 @@ public final class MaxHeap<T extends Comparable<? super T>>
         heap[rootIndex] = orphan;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        String fileName = "app/src/main/resources/data_sorted.txt";
-
-        sequentialSort(fileName);
-
-        MaxHeap<Integer> sorter = new MaxHeap<>();
-        Integer[] array = fileToArray(fileName);
-        sorter.heapsort(array, array.length);
-
-        System.out.print("\n\nHeap built using optimal method:");
-        for (int i : array) {
-            System.out.print(i + " ");
-        }
-        System.out.println("\n\nNumber of swaps in the heap creation: " + optimalSwapCount);
-        System.out.println("\nHeap after 10 removals: ");
-    }
 }

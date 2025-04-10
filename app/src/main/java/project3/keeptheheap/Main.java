@@ -8,8 +8,22 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        MaxHeap
+    public static void main(String[] args) throws FileNotFoundException {
+        String fileName = "app/src/main/resources/data_sorted.txt";
+
+        MaxHeap<Integer> sorter = new MaxHeap<>();
+
+        sorter.sequentialSort(fileName);
+
+        Integer[] array = fileToArray(fileName);
+        sorter.heapsort(array, array.length);
+
+        System.out.print("\n\nHeap built using optimal method: ");
+        for (int i : array) {
+            System.out.print(i + " ");
+        }
+        System.out.println("\n\nNumber of swaps in the heap creation: " + sorter.optimalSwapCount);
+        System.out.println("\nHeap after 10 removals: ");
     }
 
     static Integer[] fileToArray(String fileName) throws FileNotFoundException {
