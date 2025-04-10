@@ -15,7 +15,5 @@ public interface MaxHeapInterface<T extends Comparable<? super T>> {
 
     public void clear();
 
-    public void populateHeap(T[] data);
-
     public Integer[] fileToArray(String fileName) throws FileNotFoundException;
 }
