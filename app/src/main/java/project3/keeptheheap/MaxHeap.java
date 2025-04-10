@@ -77,23 +77,6 @@ public final class MaxHeap<T extends Comparable<? super T>>
     }
 
     @Override
-    // addSequential using reheap? check
-    // reheap method is for reheap down
-    public void addOptimal(T newEntry) {
-        checkInitialized();
-        lastIndex++;
-        heap[lastIndex] = newEntry;
-        int currentIndex = lastIndex;
-        while (currentIndex > 1 && heap[currentIndex].compareTo(heap[currentIndex / 2]) > 0) {
-            T temp = heap[currentIndex];
-            heap[currentIndex] = heap[currentIndex / 2];
-            heap[currentIndex / 2] = temp;
-            currentIndex = currentIndex / 2;
-            optimalSwapCount++;
-        }
-    }
-
-    @Override
     public T removeMax() {
         checkInitialized();
         T root = null;
