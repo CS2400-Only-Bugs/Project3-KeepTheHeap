@@ -38,10 +38,16 @@ public final class MaxHeap<T extends Comparable<? super T>>
         initialized = true;
     }
 
-    public void checkCapacity(int initialCapacity) throws Exception {
-        if (initialCapacity > MAX_CAPACITY) {
-            throw new Exception("Initial Capacity larger than Max Capacity");
-        }
+    public void checkCapacity(int capacity) {
+        if (capacity > MAX_CAPACITY) {
+            throw new IllegalStateException("Capacity larger than Max Capacity");
+        } 
+    }
+
+    public void doubleCapacity() {
+        int newCapacity = heap.length * 2;
+        checkCapacity(newCapacity);
+        heap = java.util.Arrays.copyOf(heap, newCapacity);
     }
 
     public boolean checkInitialized() {
@@ -51,6 +57,9 @@ public final class MaxHeap<T extends Comparable<? super T>>
     @Override
     public void addSequential(T newEntry) {
         checkInitialized();
+        if (lastIndex == heap.length) {
+            doubleCapacity();
+        }
         int newIndex = lastIndex + 1;
         int parentIndex = newIndex / 2;
         while((parentIndex > 0) && newEntry.compareTo(heap[parentIndex]) > 0) {
