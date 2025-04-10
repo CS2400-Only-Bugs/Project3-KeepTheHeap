@@ -1,7 +1,9 @@
 package project3.keeptheheap;
 
+import java.io.FileNotFoundException;
+
 public interface MaxHeapInterface<T extends Comparable<? super T>> {
-    public void addSequential(T newEntry);
+    public void add(T newEntry);
 
     public T removeMax();
 
@@ -12,4 +14,8 @@ public interface MaxHeapInterface<T extends Comparable<? super T>> {
     public int getSize();
 
     public void clear();
+
+    public void populateHeap(T[] data);
+
+    public Integer[] fileToArray(String fileName) throws FileNotFoundException;
 }
