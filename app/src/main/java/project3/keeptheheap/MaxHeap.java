@@ -2,7 +2,9 @@ package project3.keeptheheap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 public final class MaxHeap<T extends Comparable<? super T>>
         implements MaxHeapInterface<T> {
@@ -115,16 +117,17 @@ public final class MaxHeap<T extends Comparable<? super T>>
      * Prints the heap and the number of swaps made during its creation.
      * This method is used for debugging and visualization purposes.
      */
-    public void printHeap10() {
+    public void printHeap10(FileWriter write) throws IOException {
         if (lastIndex > 11) {
             for (int i = 1; i <= 10; i++) {
                 if (i == 1) {
-                    System.out.print(this.get(i));
+                    write.write(String.valueOf(this.get(i)));
                 } else {
-                    System.out.print(" ," + this.get(i));
+                    write.write("," + this.get(i));
                 }
             }
-            System.out.println();
+            write.write(",...");
+            write.write("\n");
         }
     }
 

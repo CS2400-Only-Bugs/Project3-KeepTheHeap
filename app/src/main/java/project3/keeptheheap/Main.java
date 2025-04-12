@@ -5,11 +5,15 @@ package project3.keeptheheap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner; 
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         String fileName = "app/src/main/resources/data_sorted.txt";
+        String outputFile = "app/src/main/resources/output.txt";
+
         MaxHeap<Integer> sequential = new MaxHeap<>();  
         Integer[] data = fileToArray(fileName);
 
@@ -18,31 +22,35 @@ public class Main {
             sequential.add(data[i]);
         }
 
-        System.out.print("Heap built using sequential insertions: ");
-        sequential.printHeap10();
-        System.out.println("Number of swaps in the heap creation: " + sequential.getCount());
+        try {
+            FileWriter write = new FileWriter(outputFile);
+            write.write("Heap built using sequential insertions: ");
+            sequential.printHeap10(write);
+            write.write("Number of swaps in the heap creation: " + sequential.getCount());
 
-        System.out.print("Heap after 10 removals: ");
-        sequential.printHeap10();
+            write.write("\nHeap after 10 removals: ");
+            for (int i = 0; i < 10; i++) {
+                sequential.removeMax();
+            }
+            sequential.printHeap10(write);
+            write.write("\n");
 
+            MaxHeap<Integer> optimal = new MaxHeap<>(data);
+            write.write("Heap built using optimal method: ");
+            optimal.printHeap10(write);
+            write.write("Number of swaps in the heap creation: " + optimal.getCount());
 
-        System.out.println("\n\n");
+            for (int i = 0; i < 10; i++) {
+                optimal.removeMax();
+            }
+            write.write("\nHeap after 10 removals: ");
+            optimal.printHeap10(write);
 
-        // build heap using optimal method
-        MaxHeap<Integer> optimal = new MaxHeap<>(data);
-
-        // sort heap
-        optimal.heapsort(optimal.getSize());
-
-        System.out.print("Heap built using optimal method: ");
-        optimal.printHeap10();
-        System.out.println("Number of swaps in the heap creation: " + optimal.getCount());
-
-        for (int i = 0; i < 10; i++) {
-            optimal.removeMax();
+            write.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+            e.printStackTrace();
         }
-        System.out.print("Heap after 10 removals: ");
-        optimal.printHeap10();
     }
 
     static Integer[] fileToArray(String fileName) throws FileNotFoundException {
