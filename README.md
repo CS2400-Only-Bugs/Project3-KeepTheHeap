@@ -10,7 +10,7 @@
 - **Name:** Jayden Briones
     - **Email:** jpbriones@cpp.edu
     - **Username:** Jaypb101
-    - **Role/Contribution:** 
+    - **Role/Contribution:** MaxHeap, Main (add(), printHeap10(), removeMax(), reheap())
 
 - **Name:** Jordan Fleming
     - **Email:** fleming@cpp.edu
