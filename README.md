@@ -15,8 +15,10 @@
 - **Name:** Jordan Fleming
     - **Email:** fleming@cpp.edu
     - **Username:** FunkeyMonk
-    - **Role/Contribution:** 
+    - **Role/Contribution:** Main (Sequential Heap), MaxHeap (fileToArray(), reheap(), 
+                                heapSort(), optimal method to build heap)
 
 - **Extra Notes**
     - Using gradle because we were originally going to do testing
     - Did not include testing since it was not required for this project.
+    - Used interface and generics
